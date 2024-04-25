@@ -16,3 +16,7 @@ Good To Know es una aplicación de gestión de calendario diseñada para organiz
 ### Estado del proyecto
 
 - El proyecto se encuentra ahora mismo en una fase inicial.
+
+### Contribuir
+
+- Para contribuir, por favor crear vuestra propia rama para dev con el nombre feat-"numero del issue"
