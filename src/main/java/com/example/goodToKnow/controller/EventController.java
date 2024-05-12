@@ -23,7 +23,7 @@ public class EventController {
 
   @GetMapping()
   public List<Event> getEventsByDay(
-      @RequestParam("day") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+      @RequestParam(name = "day(yyyy-mm-dd)") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
     LocalDateTime startOfDay = date.atStartOfDay();
     LocalDateTime endOfDay = date.atTime(23, 59, 59);
 

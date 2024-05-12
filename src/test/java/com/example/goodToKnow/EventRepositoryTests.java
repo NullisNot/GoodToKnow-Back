@@ -26,21 +26,11 @@ public class EventRepositoryTests {
 
   @Test
   public void shouldGetEventByDay() {
-    Event event = new Event();
-    event.setId((long) 1);
-    event.setSubject("Desarrollo de interfaces de usuario");
-    event.setTeacher("JP");
-    LocalDateTime starts = LocalDateTime.of(2024, 5, 11, 16, 00);
-    event.setStartsAt(starts);
-    LocalDateTime finish = LocalDateTime.of(2024, 5, 11, 21, 00);
-    event.setFinishesAt(finish);
-    event.setBuilding("Digital Hub");
-    event.setClassroom("Aula 5");
-    event.setLink("url.example");
-    event.setComments("Clase de desarrollo aplicaciones usuario con nextJs");
+    Event event = createEvent();
 
     Event eventSaved = repository.save(event);
-    List<Event> testEvent = repository.findByStartsAtBetween(starts, finish);
+
+    List<Event> testEvent = repository.findByStartsAtBetween(event.getStartsAt(), event.getFinishesAt());
 
     assertEquals(eventSaved, testEvent.get(0));
   }
@@ -57,19 +47,7 @@ public class EventRepositoryTests {
 
   @Test
   public void shouldGetEmptyEventListDueToNoEventThatDay() {
-    Event event = new Event();
-    event.setId((long) 1);
-    event.setSubject("Desarrollo de interfaces de usuario");
-    event.setTeacher("JP");
-    LocalDateTime EventStart = LocalDateTime.of(2024, 5, 11, 16, 00);
-    event.setStartsAt(EventStart);
-    LocalDateTime EventFinish = LocalDateTime.of(2024, 5, 11, 21, 00);
-    event.setFinishesAt(EventFinish);
-    event.setBuilding("Digital Hub");
-    event.setClassroom("Aula 5");
-    event.setLink("url.example");
-    event.setComments("Clase de desarrollo aplicaciones usuario con nextJs");
-
+    Event event = createEvent();
     repository.save(event);
 
     LocalDateTime starts = LocalDateTime.of(2024, 5, 10, 16, 00);
@@ -77,6 +55,23 @@ public class EventRepositoryTests {
     List<Event> testEvent = repository.findByStartsAtBetween(starts, finish);
 
     assertTrue(testEvent.isEmpty());
+  }
+
+  private Event createEvent() {
+    Event event = new Event();
+    event.setId((long) 1);
+    event.setSubject("Desarrollo de interfaces de usuario");
+    event.setTeacher("JP");
+    LocalDateTime starts = LocalDateTime.of(2024, 5, 11, 16, 00);
+    event.setStartsAt(starts);
+    LocalDateTime finish = LocalDateTime.of(2024, 5, 11, 21, 00);
+    event.setFinishesAt(finish);
+    event.setBuilding("Digital Hub");
+    event.setClassroom("Aula 5");
+    event.setLink("url.example");
+    event.setComments("Clase de desarrollo aplicaciones usuario con nextJs");
+
+    return event;
   }
 
 }
