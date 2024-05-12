@@ -1,6 +1,7 @@
 package com.example.goodToKnow;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,7 +43,40 @@ public class EventRepositoryTests {
     List<Event> testEvent = repository.findByStartsAtBetween(starts, finish);
 
     assertEquals(eventSaved, testEvent.get(0));
+  }
 
+  @Test
+  public void shouldGetEmptyEventList() {
+    LocalDateTime starts = LocalDateTime.of(2024, 5, 11, 16, 00);
+    LocalDateTime finish = LocalDateTime.of(2024, 5, 11, 21, 00);
+
+    List<Event> testEvent = repository.findByStartsAtBetween(starts, finish);
+
+    assertTrue(testEvent.isEmpty());
+  }
+
+  @Test
+  public void shouldGetEmptyEventListDueToNoEventThatDay() {
+    Event event = new Event();
+    event.setId((long) 1);
+    event.setSubject("Desarrollo de interfaces de usuario");
+    event.setTeacher("JP");
+    LocalDateTime EventStart = LocalDateTime.of(2024, 5, 11, 16, 00);
+    event.setStartsAt(EventStart);
+    LocalDateTime EventFinish = LocalDateTime.of(2024, 5, 11, 21, 00);
+    event.setFinishesAt(EventFinish);
+    event.setBuilding("Digital Hub");
+    event.setClassroom("Aula 5");
+    event.setLink("url.example");
+    event.setComments("Clase de desarrollo aplicaciones usuario con nextJs");
+
+    repository.save(event);
+
+    LocalDateTime starts = LocalDateTime.of(2024, 5, 10, 16, 00);
+    LocalDateTime finish = LocalDateTime.of(2024, 5, 10, 21, 00);
+    List<Event> testEvent = repository.findByStartsAtBetween(starts, finish);
+
+    assertTrue(testEvent.isEmpty());
   }
 
 }
