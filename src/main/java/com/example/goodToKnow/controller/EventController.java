@@ -7,7 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.goodToKnow.entity.Event;
 import com.example.goodToKnow.service.EventService;
-
-
 
 import com.example.goodToKnow.mapper.in.EventIn;
 import com.example.goodToKnow.mapper.out.EventOut;
@@ -30,8 +30,8 @@ public class EventController {
   @Autowired
   private EventService eventService;
 
- @GetMapping
- @ResponseStatus(HttpStatus.OK )
+  @GetMapping
+  @ResponseStatus(HttpStatus.OK)
   public List<Event> getEventsByDay(
       @RequestParam(name = "day") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
     LocalDateTime startOfDay = date.atStartOfDay();
@@ -46,5 +46,10 @@ public class EventController {
     EventOut eventOut = eventService.saveEvent(eventIn);
 
     return eventOut;
+  }
+
+  @DeleteMapping("/{eventId}")
+  public void deleteEvent(@PathVariable("eventId") Long eventId) {
+    eventService.delete(eventId);
   }
 }
