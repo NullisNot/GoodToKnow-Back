@@ -57,6 +57,15 @@ public class EventRepositoryTests {
     assertTrue(testEvent.isEmpty());
   }
 
+  @Test
+  public void shouldCreateEvent() {
+    Event event = createEvent();
+    Event testEvent = repository.save(event);
+
+    assertEquals(event.getSubject(), testEvent.getSubject());
+    assertEquals(event.getId(), testEvent.getId());
+  }
+
   private Event createEvent() {
     Event event = new Event();
     event.setId((long) 1);
