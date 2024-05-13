@@ -2,6 +2,7 @@ package com.example.goodToKnow.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,13 @@ public class EventService {
 
   public void delete(Long id) {
     eventRepository.deleteById(id);
+  }
+
+  public Event editEvent(Event event) {
+    Optional<Event> eventToEdit = eventRepository.findById(event.getId());
+    if (Optional.empty().equals(eventToEdit)) {
+      return null;
+    }
+    return eventRepository.save(event);
   }
 }
