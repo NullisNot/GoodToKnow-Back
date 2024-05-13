@@ -32,4 +32,7 @@ public class EventService {
     return eventOut;
   }
 
+  public void delete(Long id) {
+    eventRepository.deleteById(id);
+  }
 }

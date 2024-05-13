@@ -1,10 +1,12 @@
 package com.example.goodToKnow;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +66,30 @@ public class EventRepositoryTests {
 
     assertEquals(event.getSubject(), testEvent.getSubject());
     assertEquals(event.getId(), testEvent.getId());
+  }
+
+  @Test
+  public void shouldDeleteEventWhenIdExist() {
+    Event testEvent = createEvent();
+    repository.save(testEvent);
+
+    repository.deleteById((long) 1);
+
+    Optional<Event> event = repository.findById((long) 1);
+
+    assertEquals(event, Optional.empty());
+  }
+
+  @Test
+  public void shouldNotDeleteEventWhenIdDoesNotExist() {
+    Event testEvent = createEvent();
+    repository.save(testEvent);
+
+    repository.deleteById((long) 5);
+
+    Optional<Event> event = repository.findById((long) 1);
+
+    assertEquals(event.get(), testEvent);
   }
 
   private Event createEvent() {
