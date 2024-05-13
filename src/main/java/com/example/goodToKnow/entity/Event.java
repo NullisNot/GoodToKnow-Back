@@ -14,6 +14,23 @@ import lombok.Data;
 @Entity
 @Table(name = "events")
 public class Event {
+  public Event() {
+
+  }
+
+    public Event(String subject, String teacher, LocalDateTime startsAt, LocalDateTime finishesAt, String building, String classroom, String link, String comments) {
+        
+        this.subject = subject;
+        this.teacher = teacher;
+        this.startsAt = startsAt;
+        this.finishesAt = finishesAt;
+        this.building = building;
+        this.classroom = classroom;
+        this.link = link;
+        this.comments = comments;
+    }
+
+  
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -41,4 +58,5 @@ public class Event {
 
   @Column(name = "comments", nullable = false, length = 500)
   private String comments;
+
 }
