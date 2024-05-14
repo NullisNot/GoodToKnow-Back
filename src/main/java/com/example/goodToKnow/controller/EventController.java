@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -52,5 +53,13 @@ public class EventController {
   @ResponseStatus(HttpStatus.OK)
   public void deleteEvent(@PathVariable("eventId") Long eventId) {
     eventService.delete(eventId);
+  }
+
+  @PutMapping
+  @ResponseStatus(HttpStatus.OK)
+  public Event editEvent(@RequestBody Event event) {
+    Event eventEdited = eventService.editEvent(event);
+
+    return eventEdited;
   }
 }

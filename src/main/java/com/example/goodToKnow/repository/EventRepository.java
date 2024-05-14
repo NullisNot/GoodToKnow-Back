@@ -9,5 +9,4 @@ import com.example.goodToKnow.entity.Event;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
   List<Event> findByStartsAtBetween(LocalDateTime start, LocalDateTime end);
-
 }
