@@ -17,7 +17,7 @@ import com.example.goodToKnow.repository.UserRepository;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(true)
-public class UserRepositoryTests {
+public class UserJpaUnitTests {
 
   @Autowired
   private UserRepository repository;
