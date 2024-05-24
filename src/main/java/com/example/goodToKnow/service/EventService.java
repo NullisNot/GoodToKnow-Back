@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.goodToKnow.entity.Event;
+import com.example.goodToKnow.errors.EventNotFoundException;
 import com.example.goodToKnow.mapper.in.EventIn;
 import com.example.goodToKnow.mapper.out.EventOut;
 import com.example.goodToKnow.repository.EventRepository;
@@ -34,6 +35,10 @@ public class EventService {
   }
 
   public void delete(Long id) {
+    Optional<Event> event = eventRepository.findById(id);
+    if (event.isEmpty()) {
+      throw new EventNotFoundException();
+    }
     eventRepository.deleteById(id);
   }
 

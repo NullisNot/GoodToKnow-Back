@@ -20,7 +20,7 @@ import com.example.goodToKnow.repository.EventRepository;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(true)
-public class EventRepositoryTests {
+public class EventJpaUnitTests {
 
   @Autowired
   private EventRepository repository;

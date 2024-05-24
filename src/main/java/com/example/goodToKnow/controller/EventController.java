@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.goodToKnow.entity.Event;
+import com.example.goodToKnow.errors.EventNotFoundException;
 import com.example.goodToKnow.service.EventService;
 
 import com.example.goodToKnow.mapper.in.EventIn;
@@ -52,9 +54,16 @@ public class EventController {
   }
 
   @DeleteMapping("/{eventId}")
-  @ResponseStatus(HttpStatus.OK)
-  public void deleteEvent(@PathVariable("eventId") Long eventId) {
-    eventService.delete(eventId);
+  public ResponseEntity<HttpStatus> deleteEvent(@PathVariable("eventId") Long eventId) {
+    try {
+      eventService.delete(eventId);
+      return new ResponseEntity<>(HttpStatus.OK);
+    } catch (EventNotFoundException exception) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    } catch (Exception exception) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
   }
 
   @PutMapping
