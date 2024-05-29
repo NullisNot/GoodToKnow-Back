@@ -26,7 +26,7 @@ public class UserService {
 
   public void delete(Long id) {
     Optional<User> user = userRepository.findById(id);
-    if (user.isEmpty()) {
+    if (Optional.empty().equals(user)) {
       throw new UserNotFoundException();
     }
     userRepository.deleteById(id);
