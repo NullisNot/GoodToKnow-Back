@@ -66,11 +66,16 @@ public class EventController {
 
   }
 
-  @PutMapping
-  @ResponseStatus(HttpStatus.OK)
-  public Event editEvent(@RequestBody Event event) {
-    Event eventEdited = eventService.editEvent(event);
-
-    return eventEdited;
+  @PutMapping("/{eventId}")
+  public ResponseEntity<Event> editEvent(@PathVariable("eventId") Long eventId, @RequestBody  EventIn eventIn) {
+    try {
+      Event eventEdited = eventService.editEvent(eventId, eventIn);
+      return new ResponseEntity<>(eventEdited, HttpStatus.OK);
+    } catch (EventNotFoundException exception) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    } catch (Exception exception) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
+
 }

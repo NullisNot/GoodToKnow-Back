@@ -28,8 +28,8 @@ public class EventService {
         new Event(eventIn.getSubject(), eventIn.getTeacher(), eventIn.getStartsAt(), eventIn.getFinishesAt(),
             eventIn.getBuilding(), eventIn.getClassroom(), eventIn.getLink(), eventIn.getComments()));
 
-    EventOut eventOut = new EventOut(event.getSubject(), event.getTeacher(), event.getStartsAt(), event.getFinishesAt(),
-        event.getBuilding(), event.getClassroom(), event.getLink(), event.getComments());
+    EventOut eventOut = new EventOut( event.getId(), event.getSubject(), event.getTeacher(), event.getStartsAt(), event.getFinishesAt(),
+              event.getBuilding(), event.getClassroom(), event.getLink(), event.getComments());
 
     return eventOut;
   }
@@ -42,11 +42,22 @@ public class EventService {
     eventRepository.deleteById(id);
   }
 
-  public Event editEvent(Event event) {
-    Optional<Event> eventToEdit = eventRepository.findById(event.getId());
-    if (Optional.empty().equals(eventToEdit)) {
-      return null;
+  public Event editEvent(Long id, EventIn eventIn) {
+    Optional<Event> eventToEdit = eventRepository.findById(id);  
+    if (eventToEdit.isEmpty()) {
+      throw new EventNotFoundException();
     }
-    return eventRepository.save(event);
+    
+    Event eventToSave = eventToEdit.get();
+    eventToSave.setTeacher(eventIn.getTeacher());
+    eventToSave.setSubject(eventIn.getSubject());
+    eventToSave.setStartsAt(eventIn.getStartsAt());
+    eventToSave.setFinishesAt(eventIn.getFinishesAt());
+    eventToSave.setBuilding(eventIn.getBuilding());
+    eventToSave.setClassroom(eventIn.getClassroom());
+    eventToSave.setLink(eventIn.getLink());
+    eventToSave.setComments(eventIn.getComments());
+    
+    return eventRepository.save(eventToSave);
   }
 }
