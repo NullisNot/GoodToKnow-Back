@@ -56,9 +56,9 @@ public class EventControllerUnitTest {
   void shouldUpdateEvent() throws Exception {
     Event event = createEvent();
     Optional<Event> responseEvent = Optional.of((Event) event);
-    
+
     when(eventRepository.findById(event.getId())).thenReturn(responseEvent);
-    
+
     EventIn eventIn = createEventIn();
     eventIn.setTeacher("new teacher");
     String url = String.format("/api/v1/events/%s", event.getId());
@@ -66,17 +66,17 @@ public class EventControllerUnitTest {
         .content(objectMapper.writeValueAsString(eventIn)))
         .andExpect(status().isOk());
   }
-  
+
   @Test
   void shouldNotUpdateEvent() throws Exception {
-    Event event = createEvent();    
+    Event event = createEvent();
     when(eventRepository.findById(event.getId())).thenReturn(Optional.empty());
-    
+
     EventIn eventIn = createEventIn();
     eventIn.setTeacher("new teacher");
-    
+
     doThrow(new EventNotFoundException()).when(eventService).editEvent(event.getId(), eventIn);
-    
+
     String url = String.format("/api/v1/events/%s", event.getId());
     mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(eventIn)))
@@ -135,7 +135,7 @@ public class EventControllerUnitTest {
 
     return event;
   }
-  
+
   private EventIn createEventIn() {
     EventIn event = new EventIn();
     event.setSubject("Desarrollo de interfaces de usuario");
