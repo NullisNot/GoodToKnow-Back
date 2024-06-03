@@ -11,7 +11,9 @@ import com.example.goodToKnow.entity.Event;
 import com.example.goodToKnow.errors.EventNotFoundException;
 import com.example.goodToKnow.mapper.in.EventIn;
 import com.example.goodToKnow.mapper.out.EventOut;
+import com.example.goodToKnow.mapper.projections.EventProjection;
 import com.example.goodToKnow.repository.EventRepository;
+import java.util.ArrayList;
 
 @Service
 public class EventService {
@@ -21,6 +23,28 @@ public class EventService {
 
   public List<Event> getEventsByTimeInterval(LocalDateTime startOfDay, LocalDateTime endOfDay) {
     return eventRepository.findByStartsAtBetween(startOfDay, endOfDay);
+  }
+  
+  public List<EventOut> getEventsByMonth(int year, int month){
+      List<EventOut> result = new ArrayList<>();
+      List<EventProjection> data =  eventRepository.findByMonth(year, month);
+      
+      for(EventProjection eventProjection: data){
+          long id = eventProjection.getId();
+          String subject = eventProjection.getSubject();
+          String teacher = eventProjection.getTeacher();
+          LocalDateTime startsAt = eventProjection.getStarts_At();
+          LocalDateTime finishesAt = eventProjection.getFinishes_At();
+          String building = eventProjection.getBuilding();
+          String classroom = eventProjection.getClassroom();
+          String link = eventProjection.getLink();
+          String comments = eventProjection.getComments();
+          
+          EventOut eventOut = new EventOut(id, subject, teacher, startsAt, finishesAt, building, classroom, link, comments);
+          result.add(eventOut);
+      }
+      
+      return result;
   }
 
   public EventOut saveEvent(EventIn eventIn) {
