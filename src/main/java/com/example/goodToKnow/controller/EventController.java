@@ -44,6 +44,15 @@ public class EventController {
 
     return eventService.getEventsByTimeInterval(startOfDay, endOfDay);
   }
+  
+  @CrossOrigin(origins = "http://localhost:4200")
+  @GetMapping("/{year}/{month}")
+  @ResponseStatus(HttpStatus.OK)
+  public List<EventOut> getEventsByMonth(@PathVariable(name = "year") int year, @PathVariable(name = "month") int month) {
+
+    List<EventOut> result = eventService.getEventsByMonth(year, month);
+    return result;
+  }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
