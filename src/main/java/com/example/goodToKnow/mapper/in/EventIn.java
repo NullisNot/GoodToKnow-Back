@@ -14,4 +14,5 @@ public class EventIn {
   private String classroom;
   private String link;
   private String comments;
+  private boolean notification;
 }
