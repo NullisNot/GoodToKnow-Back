@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
   List<Event> findByStartsAtBetween(LocalDateTime start, LocalDateTime end);
-  
+
   @Query(value = "SELECT * FROM events e WHERE MONTH(e.starts_at) = :month AND YEAR(e.starts_at) = :year", nativeQuery = true)
   List<EventProjection> findByMonth(@Param("year") int year, @Param("month") int month);
 }
