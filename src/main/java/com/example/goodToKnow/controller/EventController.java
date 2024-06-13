@@ -65,6 +65,7 @@ public class EventController {
   }
 
   @DeleteMapping("/{eventId}")
+  @CrossOrigin(origins = "http://localhost:4200")
   public ResponseEntity<HttpStatus> deleteEvent(@PathVariable("eventId") Long eventId) {
     try {
       eventService.delete(eventId);
@@ -78,6 +79,7 @@ public class EventController {
   }
 
   @PutMapping("/{eventId}")
+  @CrossOrigin(origins = "http://localhost:4200")
   public ResponseEntity<Event> editEvent(@PathVariable("eventId") Long eventId, @RequestBody EventIn eventIn) {
     try {
       Event eventEdited = eventService.editEvent(eventId, eventIn);

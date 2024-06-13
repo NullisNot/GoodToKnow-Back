@@ -3,6 +3,7 @@ package com.example.goodToKnow.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ public class UserController {
   private UserService userService;
 
   @PostMapping
+  @CrossOrigin(origins = "http://localhost:4200")
   @ResponseStatus(HttpStatus.CREATED)
   public UserOut createUser(@RequestBody UserIn userIn) {
     UserOut userOut = userService.saveUser(userIn);
@@ -31,6 +33,7 @@ public class UserController {
   }
 
   @DeleteMapping("/{userId}")
+  @CrossOrigin(origins = "http://localhost:4200")
   public ResponseEntity<HttpStatus> deleteUser(@PathVariable("userId") Long userId) {
     try {
       userService.delete(userId);
