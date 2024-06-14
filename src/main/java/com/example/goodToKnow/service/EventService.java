@@ -62,6 +62,11 @@ public class EventService {
         event.getFinishesAt(),
         event.getBuilding(), event.getClassroom(), event.getLink(), event.getComments());
 
+    String message = buildMessage(eventIn, "creado");
+    if (eventIn.isNotification()) {
+      notificationService.sendTelegramNotification(message);
+    }
+
     return eventOut;
   }
 
@@ -90,7 +95,7 @@ public class EventService {
     eventToSave.setComments(eventIn.getComments());
 
     Event result = eventRepository.save(eventToSave);
-    String message = buildMessage(eventIn);
+    String message = buildMessage(eventIn, "editado");
 
     if (eventIn.isNotification()) {
       notificationService.sendTelegramNotification(message);
@@ -98,7 +103,7 @@ public class EventService {
     return result;
   }
 
-  private String buildMessage(EventIn eventIn) {
+  private static String buildMessage(EventIn eventIn, String action) {
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -106,16 +111,18 @@ public class EventService {
     String formattedStartsAt = eventIn.getStartsAt().toLocalTime().format(timeFormatter);
     String formattedFinishesAt = eventIn.getFinishesAt().toLocalTime().format(timeFormatter);
 
+    String eventStatus = "creado".equalsIgnoreCase(action) ? "Evento creado:" : "Evento editado:";
+
     String message = String.format(
-        "Evento del día %s editado:\n" +
-            " - Profesor: %s\n" +
-            " - Asignatura: %s\n" +
-            " - Comienza: %s\n" +
-            " - Termina: %s\n" +
-            " - Edificio: %s\n" +
-            " - Aula: %s\n" +
-            " - Enlace: %s\n" +
-            " - Comentarios: %s\n",
+        "📢 %s\n" +
+            " - 📌 Día %s\n" +
+            " - 👨‍🏫 Docente: %s\n" +
+            " - 📚 Asignatura: %s\n" +
+            " - 🕓 Horario: %s/%s\n" +
+            " - 🏢 Edificio: %s, %s\n" +
+            " - 🔗 Enlace: %s\n" +
+            " - 📝 Comentarios: %s\n",
+        eventStatus,
         formattedDate,
         eventIn.getTeacher(),
         eventIn.getSubject(),
