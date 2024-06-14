@@ -1,6 +1,7 @@
 package com.example.goodToKnow.service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,13 +90,42 @@ public class EventService {
     eventToSave.setComments(eventIn.getComments());
 
     Event result = eventRepository.save(eventToSave);
+    String message = buildMessage(eventIn);
 
     if (eventIn.isNotification()) {
-      StringBuilder messageBuilder = new StringBuilder();
-      messageBuilder.append("Evento editado: ").append(eventIn.getSubject());
-
-      notificationService.sendTelegramNotification(messageBuilder.toString());
+      notificationService.sendTelegramNotification(message);
     }
     return result;
+  }
+
+  private String buildMessage(EventIn eventIn) {
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+    String formattedDate = eventIn.getStartsAt().toLocalDate().format(dateFormatter);
+    String formattedStartsAt = eventIn.getStartsAt().toLocalTime().format(timeFormatter);
+    String formattedFinishesAt = eventIn.getFinishesAt().toLocalTime().format(timeFormatter);
+
+    String message = String.format(
+        "Evento del día %s editado:\n" +
+            " - Profesor: %s\n" +
+            " - Asignatura: %s\n" +
+            " - Comienza: %s\n" +
+            " - Termina: %s\n" +
+            " - Edificio: %s\n" +
+            " - Aula: %s\n" +
+            " - Enlace: %s\n" +
+            " - Comentarios: %s\n",
+        formattedDate,
+        eventIn.getTeacher(),
+        eventIn.getSubject(),
+        formattedStartsAt,
+        formattedFinishesAt,
+        eventIn.getBuilding(),
+        eventIn.getClassroom(),
+        eventIn.getLink(),
+        eventIn.getComments());
+
+    return message;
   }
 }
