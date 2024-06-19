@@ -36,9 +36,10 @@ public class EventServiceTest {
         LocalDateTime startOfDay = LocalDateTime.of(2024, 6, 1, 0, 0);
         LocalDateTime endOfDay = LocalDateTime.of(2024, 6, 1, 23, 59);
         List<Event> events = Arrays.asList(
-                new Event("Subject1", "Teacher1", startOfDay.plusHours(1), startOfDay.plusHours(2), "Building1", "Classroom1", "Link1", "Comments1"),
-                new Event("Subject2", "Teacher2", startOfDay.plusHours(3), startOfDay.plusHours(4), "Building2", "Classroom2", "Link2", "Comments2")
-        );
+                new Event("Subject1", "Teacher1", startOfDay.plusHours(1), startOfDay.plusHours(2), "Building1",
+                        "Classroom1", "Link1", "Comments1"),
+                new Event("Subject2", "Teacher2", startOfDay.plusHours(3), startOfDay.plusHours(4), "Building2",
+                        "Classroom2", "Link2", "Comments2"));
 
         when(eventRepository.findByStartsAtBetween(startOfDay, endOfDay)).thenReturn(events);
 
@@ -51,7 +52,8 @@ public class EventServiceTest {
     @Test
     public void testSaveEvent() {
         EventIn eventIn = createEventIn();
-        Event savedEvent = new Event("Subject1", "Teacher1", eventIn.getStartsAt(), eventIn.getFinishesAt(), "Building1", "Classroom1", "Link1", "Comments1");
+        Event savedEvent = new Event("Subject1", "Teacher1", eventIn.getStartsAt(), eventIn.getFinishesAt(),
+                "Building1", "Classroom1", "Link1", "Comments1");
         savedEvent.setId(1L);
 
         when(eventRepository.save(any(Event.class))).thenReturn(savedEvent);
@@ -89,10 +91,11 @@ public class EventServiceTest {
     }
 
     @Test
-    public void testEditEvent() {
+    public void testEditEvent() throws Exception {
         Long eventId = 1L;
         EventIn eventIn = createEventIn();
-        Event existingEvent = new Event("Subject1", "Teacher1", LocalDateTime.now(), LocalDateTime.now().plusHours(1), "Building1", "Classroom1", "Link1", "Comments1");
+        Event existingEvent = new Event("Subject1", "Teacher1", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
+                "Building1", "Classroom1", "Link1", "Comments1");
         existingEvent.setId(eventId);
 
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(existingEvent));
@@ -117,7 +120,7 @@ public class EventServiceTest {
         verify(eventRepository, times(1)).findById(eventId);
         verify(eventRepository, never()).save(any(Event.class));
     }
-    
+
     private Event createEvent() {
         Event event = new Event();
         event.setId((long) 1);
@@ -133,8 +136,8 @@ public class EventServiceTest {
         event.setComments("Clase de desarrollo aplicaciones usuario con nextJs");
 
         return event;
-  }
-  
+    }
+
     private EventIn createEventIn() {
         EventIn event = new EventIn();
         event.setSubject("Desarrollo de interfaces de usuario");
@@ -149,6 +152,6 @@ public class EventServiceTest {
         event.setComments("Clase de desarrollo aplicaciones usuario con nextJs");
 
         return event;
-  }
+    }
 
 }
