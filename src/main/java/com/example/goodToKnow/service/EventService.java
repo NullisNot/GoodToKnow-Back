@@ -123,8 +123,8 @@ public class EventService {
     String formattedStartsAt = eventIn.getStartsAt().toLocalTime().format(timeFormatter);
     String formattedFinishesAt = eventIn.getFinishesAt().toLocalTime().format(timeFormatter);
 
-    String eventStatus = "creado".equalsIgnoreCase(action) ? "🆕¡Nuevo evento!🆕"
-        : "📢¡Se han registrado cambios!📢";
+    String eventStatus = "creado".equalsIgnoreCase(action) ? "🆕 ¡Nuevo evento! 🆕"
+        : "📢 ¡Se han registrado cambios! 📢";
 
     String message = String.format(
         "%s\n\n" +
