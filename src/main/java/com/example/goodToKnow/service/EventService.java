@@ -123,15 +123,16 @@ public class EventService {
     String formattedStartsAt = eventIn.getStartsAt().toLocalTime().format(timeFormatter);
     String formattedFinishesAt = eventIn.getFinishesAt().toLocalTime().format(timeFormatter);
 
-    String eventStatus = "creado".equalsIgnoreCase(action) ? "Evento creado:" : "Evento editado:";
+    String eventStatus = "creado".equalsIgnoreCase(action) ? "🆕¡Nuevo evento!🆕"
+        : "📢¡Se han registrado cambios!📢";
 
     String message = String.format(
-        "📢 %s\n" +
-            " - 📌 Día %s\n" +
-            " - 👨‍🏫 Docente: %s\n" +
+        "%s\n\n" +
+            " - 📌 Día: %s\n" +
             " - 📚 Asignatura: %s\n" +
+            " - 👨‍🏫 Docente: %s\n" +
             " - 🕓 Horario: %s/%s\n" +
-            " - 🏢 Edificio: %s, %s\n" +
+            " - 🏢 Ubicación: %s, %s\n" +
             " - 🔗 Enlace: %s\n" +
             " - 📝 Comentarios: %s\n",
         eventStatus,
