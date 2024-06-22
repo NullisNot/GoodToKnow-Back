@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.goodToKnow.entity.Event;
+import com.example.goodToKnow.entity.Notification;
 import com.example.goodToKnow.errors.EventNotFoundException;
 import com.example.goodToKnow.mapper.in.EventIn;
 import com.example.goodToKnow.mapper.out.EventOut;
 import com.example.goodToKnow.mapper.projections.EventProjection;
 import com.example.goodToKnow.repository.EventRepository;
-import com.example.goodToKnow.service.notification.NotificationService;
+import com.example.goodToKnow.service.notification.TelegramNotificationService;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,10 @@ public class EventService {
   EventRepository eventRepository;
 
   @Autowired
-  private NotificationService notificationService;
+  TelegramNotificationService telegramNotificationService;
+
+  @Autowired
+  NotificationService notificationService;
 
   public List<Event> getEventsByTimeInterval(LocalDateTime startOfDay, LocalDateTime endOfDay) {
     return eventRepository.findByStartsAtBetween(startOfDay, endOfDay);
@@ -63,8 +67,13 @@ public class EventService {
         event.getBuilding(), event.getClassroom(), event.getLink(), event.getComments());
 
     String message = buildMessage(eventIn, "creado");
+
+    Notification notification = new Notification();
+    notification.setNotification(message);
+
     if (eventIn.isNotification()) {
-      notificationService.sendTelegramNotification(message);
+      telegramNotificationService.sendTelegramNotification(message);
+      notificationService.saveNotification(notification);
     }
 
     return eventOut;
@@ -96,9 +105,12 @@ public class EventService {
 
     Event result = eventRepository.save(eventToSave);
     String message = buildMessage(eventIn, "editado");
+    Notification notification = new Notification();
+    notification.setNotification(message);
 
     if (eventIn.isNotification()) {
-      notificationService.sendTelegramNotification(message);
+      telegramNotificationService.sendTelegramNotification(message);
+      notificationService.saveNotification(notification);
     }
     return result;
   }

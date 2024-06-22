@@ -7,7 +7,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
-public class NotificationService {
+public class TelegramNotificationService {
   @Autowired
   private WebClient.Builder webClientBuilder;
 
