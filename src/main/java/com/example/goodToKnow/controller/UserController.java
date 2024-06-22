@@ -33,7 +33,7 @@ public class UserController {
   }
 
   @DeleteMapping("/{userId}")
-  @CrossOrigin(origins = "http://localhost:4200")
+  @CrossOrigin(origins = { "http://localhost:4200" })
   public ResponseEntity<HttpStatus> deleteUser(@PathVariable("userId") Long userId) {
     try {
       userService.delete(userId);
