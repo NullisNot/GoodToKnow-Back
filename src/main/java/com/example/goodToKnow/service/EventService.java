@@ -129,8 +129,8 @@ public class EventService {
     String message = String.format(
         "%s\n\n" +
             " - 📌 Día: %s\n" +
-            " - 📚 Asignatura: %s\n" +
             " - 👨‍🏫 Docente: %s\n" +
+            " - 📚 Asignatura: %s\n" +
             " - 🕓 Horario: %s/%s\n" +
             " - 🏢 Ubicación: %s, %s\n" +
             " - 🔗 Enlace: %s\n" +
