@@ -24,17 +24,20 @@ import com.example.goodToKnow.entity.Event;
 import com.example.goodToKnow.errors.EventNotFoundException;
 import com.example.goodToKnow.service.EventService;
 
+import lombok.RequiredArgsConstructor;
+
 import com.example.goodToKnow.mapper.in.EventIn;
 import com.example.goodToKnow.mapper.out.EventOut;
 
 @RestController()
 @RequestMapping(path = "api/v1/events")
+@RequiredArgsConstructor
+@CrossOrigin(origins = { "http://localhost:4200" })
 public class EventController {
 
   @Autowired
   private EventService eventService;
 
-  @CrossOrigin(origins = "http://localhost:4200")
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public List<Event> getEventsByDay(
@@ -45,7 +48,6 @@ public class EventController {
     return eventService.getEventsByTimeInterval(startOfDay, endOfDay);
   }
 
-  @CrossOrigin(origins = "http://localhost:4200")
   @GetMapping("/{year}/{month}")
   @ResponseStatus(HttpStatus.OK)
   public List<EventOut> getEventsByMonth(@PathVariable(name = "year") int year,
@@ -56,7 +58,6 @@ public class EventController {
   }
 
   @PostMapping
-  @CrossOrigin(origins = "http://localhost:4200")
   @ResponseStatus(HttpStatus.CREATED)
   public EventOut createEvent(@RequestBody EventIn eventIn) {
     EventOut eventOut = eventService.saveEvent(eventIn);
@@ -65,7 +66,6 @@ public class EventController {
   }
 
   @DeleteMapping("/{eventId}")
-  @CrossOrigin(origins = "http://localhost:4200")
   public ResponseEntity<HttpStatus> deleteEvent(@PathVariable("eventId") Long eventId) {
     try {
       eventService.delete(eventId);
@@ -79,7 +79,6 @@ public class EventController {
   }
 
   @PutMapping("/{eventId}")
-  @CrossOrigin(origins = "http://localhost:4200")
   public ResponseEntity<Event> editEvent(@PathVariable("eventId") Long eventId, @RequestBody EventIn eventIn) {
     try {
       Event eventEdited = eventService.editEvent(eventId, eventIn);
