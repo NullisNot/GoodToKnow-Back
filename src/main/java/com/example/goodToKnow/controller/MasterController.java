@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,15 +17,21 @@ import com.example.goodToKnow.service.MasterService;
 
 @RestController()
 @RequestMapping(path = "api/v1/masters")
+@CrossOrigin(origins = { "http://localhost:4200" })
 public class MasterController {
   @Autowired
   private MasterService masterService;
 
-  @CrossOrigin(origins = "http://localhost:4200")
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public List<Master> getMasters() {
     return masterService.findMasters();
+  }
+
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public Master createMaster(@RequestBody Master master) {
+    return masterService.saveMaster(master);
   }
 
 }
